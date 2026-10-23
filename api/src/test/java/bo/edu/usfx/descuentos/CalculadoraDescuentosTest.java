@@ -46,4 +46,17 @@ class CalculadoraDescuentosTest {
                 assertThrows(IllegalArgumentException.class, () -> calculadora.calcularPrecioFinal(precio, 10));
         assertEquals("El precio original debe ser mayor que cero", e.getMessage());
     }
+
+    @Test
+    void rechazaNumerosNoFinitos() {
+        assertThrows(IllegalArgumentException.class, () -> calculadora.calcularPrecioFinal(Double.POSITIVE_INFINITY, 10));
+        assertThrows(IllegalArgumentException.class, () -> calculadora.calcularPrecioFinal(100, Double.NaN));
+    }
+
+    @Test
+    void rechazaPrecioMayorAlMaximo() {
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class,
+                () -> calculadora.calcularPrecioFinal(1_000_000_001d, 10));
+        assertEquals("El precio original no puede superar 1000000000", e.getMessage());
+    }
 }
